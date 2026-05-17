@@ -7,14 +7,18 @@ class Solution {
         return ans;
     }
 
-    private void backtrack(List<String> ans, String path,
-                           String num, int target,
-                           int index, long value, long prev) {
+    private void backtrack(List<String> ans,
+                           String path,
+                           String num,
+                           int target,
+                           int index,
+                           long value,
+                           long prev) {
 
-        // If we used all digits
+        // If all digits are used
         if (index == num.length()) {
 
-            // Check if expression evaluates to target
+            // Check if expression equals target
             if (value == target) {
                 ans.add(path);
             }
@@ -22,10 +26,10 @@ class Solution {
             return;
         }
 
-        // Try every possible number
+        // Try every possible number from current index
         for (int i = index; i < num.length(); i++) {
 
-            // Handle leading zero
+            // Prevent numbers with leading zeros
             if (i != index && num.charAt(index) == '0') {
                 break;
             }
@@ -34,11 +38,17 @@ class Solution {
 
             long curr = Long.parseLong(currStr);
 
-            // First number (no operator before it)
+            // First number in expression
+            // No operator needed before it
             if (index == 0) {
 
-                backtrack(ans, currStr, num, target,
-                          i + 1, curr, curr);
+                backtrack(ans,
+                          currStr,
+                          num,
+                          target,
+                          i + 1,
+                          curr,
+                          curr);
 
             } else {
 
@@ -61,6 +71,8 @@ class Solution {
                           -curr);
 
                 // Multiplication
+                // Remove previous operand and replace it
+                // with prev * curr to handle precedence
                 backtrack(ans,
                           path + "*" + currStr,
                           num,
