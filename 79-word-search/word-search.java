@@ -1,7 +1,15 @@
 class Solution {
+
+    // Main function
     public boolean exist(char[][] board, String word) {
-       int rows = board.length;
+
+        int rows = board.length;
         int cols = board[0].length;
+
+        // Quick pruning
+        if (word.length() > rows * cols) {
+            return false;
+        }
 
         // Try starting from every cell
         for (int i = 0; i < rows; i++) {
@@ -16,6 +24,7 @@ class Solution {
         return false;
     }
 
+    // DFS + Backtracking
     private boolean dfs(char[][] board,
                         String word,
                         int row,
@@ -27,7 +36,7 @@ class Solution {
             return true;
         }
 
-        // Boundary checks
+        // Boundary checks + mismatch
         if (row < 0 || col < 0 ||
             row >= board.length ||
             col >= board[0].length ||
@@ -36,22 +45,22 @@ class Solution {
             return false;
         }
 
-        // Store current character
+        // Save current character
         char temp = board[row][col];
 
-        // Mark as visited
+        // Mark visited
         board[row][col] = '#';
 
-        // Explore all 4 directions
+        // Explore 4 directions
         boolean found =
                 dfs(board, word, row + 1, col, index + 1) || // down
                 dfs(board, word, row - 1, col, index + 1) || // up
                 dfs(board, word, row, col + 1, index + 1) || // right
                 dfs(board, word, row, col - 1, index + 1);   // left
 
-        // Restore original character
+        // Backtrack
         board[row][col] = temp;
 
-        return found; 
+        return found;
     }
 }
