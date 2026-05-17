@@ -1,14 +1,23 @@
+
 class Solution {
+
     public List<String> addOperators(String num, int target) {
+
         List<String> ans = new ArrayList<>();
 
-        backtrack(ans, "", num, target, 0, 0, 0);
+        backtrack(ans,
+                  new StringBuilder(),
+                  num,
+                  target,
+                  0,
+                  0,
+                  0);
 
         return ans;
     }
 
     private void backtrack(List<String> ans,
-                           String path,
+                           StringBuilder path,
                            String num,
                            int target,
                            int index,
@@ -20,16 +29,16 @@ class Solution {
 
             // Check if expression equals target
             if (value == target) {
-                ans.add(path);
+                ans.add(path.toString());
             }
 
             return;
         }
 
-        // Try every possible number from current index
+        // Try every possible number
         for (int i = index; i < num.length(); i++) {
 
-            // Prevent numbers with leading zeros
+            // Prevent leading zeros
             if (i != index && num.charAt(index) == '0') {
                 break;
             }
@@ -38,48 +47,63 @@ class Solution {
 
             long curr = Long.parseLong(currStr);
 
-            // First number in expression
-            // No operator needed before it
+            int len = path.length();
+
+            // First number
             if (index == 0) {
 
+                path.append(currStr);
+
                 backtrack(ans,
-                          currStr,
+                          path,
                           num,
                           target,
                           i + 1,
                           curr,
                           curr);
 
+                path.setLength(len);
+
             } else {
 
                 // Addition
+                path.append('+').append(currStr);
+
                 backtrack(ans,
-                          path + "+" + currStr,
+                          path,
                           num,
                           target,
                           i + 1,
                           value + curr,
                           curr);
 
+                path.setLength(len);
+
                 // Subtraction
+                path.append('-').append(currStr);
+
                 backtrack(ans,
-                          path + "-" + currStr,
+                          path,
                           num,
                           target,
                           i + 1,
                           value - curr,
                           -curr);
 
+                path.setLength(len);
+
                 // Multiplication
-                // Remove previous operand and replace it
-                // with prev * curr to handle precedence
+                path.append('*').append(currStr);
+
                 backtrack(ans,
-                          path + "*" + currStr,
+                          path,
                           num,
                           target,
                           i + 1,
-                          value - prev + (prev * curr),
+                          value - prev + prev * curr,
                           prev * curr);
+
+                path.setLength(len);
             }
         }
     }
