@@ -5,7 +5,7 @@ class Solution {
         for(int ele : arr){
             freq.put(ele , freq.getOrDefault(ele , 0) + 1);
         }
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder((a,b) -> freq.get(a) - freq.get(b)));
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> freq.get(b) - freq.get(a));
         for(int ele : freq.keySet()){
             pq.offer(ele);
         }
