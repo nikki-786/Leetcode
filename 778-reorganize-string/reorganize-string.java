@@ -1,11 +1,17 @@
 class Solution {
     public String reorganizeString(String s) {
+        int n = s.length();
 
         // Count frequency of characters
         Map<Character, Integer> freq = new HashMap<>();
 
         for (char ch : s.toCharArray()) {
             freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+        }
+        for (int count : freq.values()) {
+            if (count > (n + 1) / 2) {
+                return ""; // impossible to rearrange
+            }
         }
 
         // Max Heap based on frequency
