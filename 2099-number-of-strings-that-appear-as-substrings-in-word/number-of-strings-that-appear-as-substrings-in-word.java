@@ -1,8 +1,8 @@
 class Solution {
     public int numOfStrings(String[] patterns, String word) {
         int count = 0;
-        for(String str:patterns){
-            if(word.contains(str)){
+        for(String pattern:patterns){
+            if(word.contains(pattern)){
                 count++;
             }
         }
